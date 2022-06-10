@@ -18,68 +18,72 @@ class CtnLeft extends StatelessWidget{
 
     return Container(
       margin: const EdgeInsets.only(left: 50),
+      child: Column(
+        children: [
+      Container(
       padding: EdgeInsets.only(bottom: 20),
-          constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
+      constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
 
-          decoration:  BoxDecoration(
-              color: HexColor("#F5F5F5"),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
-              )
+      decoration:  BoxDecoration(
+          color: HexColor("#F5F5F5"),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+          )
+      ),
+      child: Column(
+        children: [
+          Container(
+              margin: EdgeInsets.only(top:25),
+              child:
+              Text(translate.getTxt("day_nb") + wordDay, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
           ),
-          child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top:25),
-                  child:
-                  Text(translate.getTxt("day_nb") + wordDay, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
-              ),
-              Container(
-                  margin: EdgeInsets.only(top:25),
-                  child:
-                  Text(translate.getTxt("found") + " " +find_nb + " " + translate.getTxt("persones") , style: TextStyle(fontSize: 20))
-              ),
+          Container(
+              margin: EdgeInsets.only(top:25),
+              child:
+              Text(translate.getTxt("found") + " " +find_nb + " " + translate.getTxt("persones") , style: TextStyle(fontSize: 20))
+          ),
 
-              Container(
-                  margin: EdgeInsets.only(top:25),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom:10),
-                        child:
-                        Text(translate.getTxt("ldb"), style: TextStyle(fontSize: 20, decoration: TextDecoration.underline,), textAlign: TextAlign.end),
+          Container(
+              margin: EdgeInsets.only(top:25),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom:10),
+                    child:
+                    Text(translate.getTxt("ldb"), style: TextStyle(fontSize: 20, decoration: TextDecoration.underline,), textAlign: TextAlign.end),
 
-                      ),
-                      rowColorLeftAxis('990 → 1000', 0),
-                      rowColorLeftAxis('900 → 990', 25),
-                      rowColorLeftAxis('1 → 900', 110),
-                      rowColorLeftAxis('0', 1100),
-                    ],
-                  )
-
-              ),
-
-              Container(
-                margin: EdgeInsets.only(top:25, left: 50, right: 50),
-                child: SoftLine("#808080"),
-              ),
-              Container(
-                  margin: EdgeInsets.only(top:10),
-                  child:
-                  Text(translate.getTxt("yes_word") + " " + yesterdayWord.toCapitalized(), style: TextStyle(fontSize: 20))
-              ),
-
-              Container(
-                margin: EdgeInsets.only(top:10, left: 50, right: 50),
-                child: SoftLine("#808080"),
+                  ),
+                  rowColorLeftAxis('990 → 1000', 0),
+                  rowColorLeftAxis('900 → 990', 25),
+                  rowColorLeftAxis('1 → 900', 110),
+                  rowColorLeftAxis('0', 1100),
+                ],
               )
 
-            ],
           ),
-      );
+
+          Container(
+            margin: EdgeInsets.only(top:25, left: 50, right: 50),
+            child: SoftLine("#808080"),
+          ),
+          Container(
+              margin: EdgeInsets.only(top:10),
+              child:
+              Text(translate.getTxt("yes_word") + " " + yesterdayWord.toCapitalized(), style: TextStyle(fontSize: 20))
+          ),
+
+        ],
+      ),
+    ),
+
+        ],
+      )
+    );
+
+
     }
 
   Container rowColorLeftAxis(txt, rank){
