@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import '../animation/BarProgress.dart';
 import '../draw/ProgressSquare.dart';

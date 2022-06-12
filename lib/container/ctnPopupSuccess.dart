@@ -54,36 +54,40 @@ class PopupSuccessState extends State<PopupSuccess>
     var tomorrowMidnight = DateTime(now.year, now.month, now.day +1);
     int endTime = tomorrowMidnight.millisecondsSinceEpoch + 1000*60*60 - now.millisecondsSinceEpoch;
 
-    String txt = "Wordy#${widget.wordDay} - ${widget.listWordsElement.length}/10\n\n";
+
+    int oneNb = 0;
+    int twoNb = 0;
+    int threeNb = 0;
+    int fourNb = 0;
+
+    String txtBase = "Wordy#${widget.wordDay} - ${widget.listWordsElement.length}/10";
 
     for(var i=0;i<widget.listWordsElement.length;i++){
       WordElement item = widget.listWordsElement[i];
       print(item.levelOfSimilarity());
       if (item.levelOfSimilarity()==1){
-        txt += "🟩";
+        oneNb +=1;
       }
       if (item.levelOfSimilarity()==2){
-        txt += "🟨";
+        twoNb +=1;
       }
       if (item.levelOfSimilarity()==3){
-        txt += "🟧";
+        threeNb +=1;
       }
       if (item.levelOfSimilarity()==4){
-        txt += "🟥";
-      }
-
-      if((i+1)%15 == 0){
-        txt += "\n";
+        fourNb +=1;
       }
     }
 
-    return render(txt, endTime);
+    String txtToCopy = "${txtBase}\n\n🟩 ${(oneNb +1).toString()}  \n🟨 ${twoNb.toString()}\n🟧 ${threeNb.toString()}\n🟥 ${fourNb.toString()}\n\nwordy.cf";
+
+    return render(txtBase, txtToCopy, endTime, oneNb, twoNb, threeNb, fourNb);
 
 
   }
 
 
-  Widget render(String txt, int endTime){
+  Widget render(String txtBase, String txt, int endTime, int oneNb, int twoiNb, int threeNb, int fourNb){
 
     double popupWidth = 475;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -142,7 +146,7 @@ class PopupSuccessState extends State<PopupSuccess>
 
 
                     Container(
-                        margin: EdgeInsets.only(top: 25),
+                        margin: EdgeInsets.only(top: 20),
                         width: popupWidth,
                         child:
                         Text(
@@ -158,7 +162,69 @@ class PopupSuccessState extends State<PopupSuccess>
                     Container(
                       width: popupWidth,
                       margin: EdgeInsets.only(top: 25),
-                      child: Text(txt, style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                      child: Text(txtBase, style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                    ),
+
+                    Container(
+                      width: popupWidth,
+                      height: 100,
+                      margin: EdgeInsets.only(top: 25),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 50,
+                                child: Text("🟩", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              ),
+                              Container(
+                                width: 50,
+                                child: Text((oneNb +1).toString(), style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 50,
+                                child: Text("🟨", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              ),
+                              Container(
+                                width: 50,
+                                child: Text(twoiNb.toString(), style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 50,
+                                child: Text("🟧", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              ),
+                              Container(
+                                width: 50,
+                                child: Text(threeNb.toString(), style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 50,
+                                child: Text("🟥", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              ),
+                              Container(
+                                width: 50,
+                                child: Text(fourNb.toString(), style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
+                              )
+                            ],
+                          )
+                        ],
+                      )
                     ),
 
 

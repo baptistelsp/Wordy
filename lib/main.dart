@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,8 +21,17 @@ import 'package:timezone/standalone.dart' as tz;
 import 'package:flutter/services.dart';
 
 import 'container/ctnPopupSuccess.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.blue, // navigation bar color
+      statusBarColor: Colors.blue, // status bar color
+    ));
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
   runApp(const MyApp());
@@ -35,7 +45,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Wordy',
-
+      onGenerateTitle: (BuildContext context) {
+        return "Wordy";
+      },
       theme: ThemeData(
 
         primarySwatch: Colors.indigo,
@@ -183,13 +195,6 @@ class _MyHomePageState extends State<MyHomePage> {
           print(obj["progress"]);
           if(obj["progress"] >= 995){
 
-            listWordsElement.add(lastWordSend);
-
-            print(widget.translate);
-            print(lastWordSend.word);
-            print(nbWordSend.toString());
-            print(listWordsElement);
-            print(wordDay);
 
             showDialog(
               context: context,
@@ -215,7 +220,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(listWordsElement);
     listWordsElement.sort((b, a) => a.progression.compareTo(b.progression));
 
-
+    double screenWidth = MediaQuery.of(context).size.width;
+    double topBarHeight = 200;
+    if(screenWidth <= 500){
+      topBarHeight =100;
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -224,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             children: <Widget>[
               Container( // Topbar
-                height: 200,
+                height: topBarHeight,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.blueAccent,
                 alignment: Alignment.center,
@@ -262,10 +271,16 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     print(getData);
 
+    double marginTopMainAxis = 50;
+
+    if(screenWidth <= 500){
+      marginTopMainAxis = 10;
+    }
+
     if(screenWidth > 1550){
       return Container(
         constraints: BoxConstraints(minHeight:  MediaQuery.of(context).size.height *0.65),
-        margin: const EdgeInsets.only(top: 50),
+        margin: EdgeInsets.only(top: marginTopMainAxis),
 
         child: Stack(
           children: [
@@ -284,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     } else {
       return Container(
-        margin: const EdgeInsets.only(top: 50),
+        margin: EdgeInsets.only(top: marginTopMainAxis),
         child:
         containerMainAxis()
 
@@ -299,8 +314,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   TextField renderTextField(isWordValid) {
+
+
     return TextField(
       autofocus: true,
+      textInputAction: TextInputAction.send,
       focusNode: myFocusNode,
       onSubmitted: (value){
         onButtonPress();
@@ -360,18 +378,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Column renderGame(){
 
+    double screenWidth = MediaQuery.of(context).size.width;
     double widthProgress = 100;
-
-    if(MediaQuery.of(context).size.width < 400){
+    double marginTopResult = 50;
+    if(screenWidth <= 400){
       widthProgress = 50;
+    }
+
+    if(screenWidth <= 500){
+      marginTopResult = 20;
     }
 
     if(lastWordSend.id != -1){
       return Column(
           children: [
-            renderTextField(isWordValaide),
-            const SizedBox(
-              height: 50,
+          renderTextField(isWordValaide),
+
+            SizedBox(
+              height: marginTopResult,
             ),
 
 
@@ -445,8 +469,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return Column(
           children: [
             renderTextField(isWordValaide),
-            const SizedBox(
-            height: 50,
+            SizedBox(
+            height: marginTopResult,
           ),
             renderNoItem()
 
@@ -455,6 +479,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
+
+  void handleKeyPress(event){
+    if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+      onButtonPress();
+    }
+  }
 
   Container shouldRenderCtn(BuildContext context){
 
@@ -479,7 +509,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           Container(
             constraints: BoxConstraints(minWidth: 100, maxWidth: 300),
-            child: Image.asset('empty_list.png')
+            child: Image.asset('assets/empty_list.png')
           ),
           Container(
             child: Text(widget.translate.getTxt("propose_fw"), style: TextStyle(fontSize: 24),),

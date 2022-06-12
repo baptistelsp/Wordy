@@ -4,7 +4,6 @@ import '../draw/SoftLine.dart';
 
 import 'package:language_picker/languages.dart';
 import 'package:language_picker/language_picker.dart';
-import 'dart:html' as html;
 
 import '../i18n.dart';
 import '../utils/color.dart';
